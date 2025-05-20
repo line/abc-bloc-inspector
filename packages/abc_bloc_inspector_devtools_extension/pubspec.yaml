@@ -1,0 +1,40 @@
+name: abc_bloc_inspector_devtools_extension
+description: "The ABC Bloc Inspector DevTools Extension is a powerful tool designed to enhance the debugging and visualization of bloc state management in Flutter applications. By providing a comprehensive suite of utilities, this extension simplifies the process of tracking and analyzing state changes, making it an invaluable resource for developers aiming to build robust and maintainable Flutter applications."
+publish_to: 'none'
+
+version: 1.0.0
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+dependencies:
+  abc_bloc_inspector:
+    path: ../abc_bloc_inspector
+  cupertino_icons: ^1.0.6
+  devtools_app_shared: ^0.3.1
+  devtools_extensions: ^0.3.1
+  flutter:
+    sdk: flutter
+  flutter_json: ^0.0.4
+  flutter_riverpod: ^2.6.1
+  freezed: ^3.0.6
+  freezed_annotation: ^3.0.0
+  intl: ^0.20.2
+  json_annotation: ^4.9.0
+  package_info_plus: ^8.3.0
+  riverpod_annotation: ^2.6.1
+  vm_service: ^15.0.0
+  web: ^1.1.1
+
+dev_dependencies:
+  build_runner: ^2.4.9
+  flutter_lints: ^5.0.0
+  json_serializable: ^6.8.0
+  riverpod_generator: ^2.4.0
+  riverpod_lint: ^2.3.10
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/

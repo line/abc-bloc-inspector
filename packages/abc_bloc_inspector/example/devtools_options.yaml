@@ -1,0 +1,6 @@
+description: This file stores settings for Dart & Flutter DevTools.
+documentation: https://docs.flutter.dev/tools/devtools/extensions#configure-extension-enablement-states
+extensions:
+  - provider: true
+  - abc_bloc_inspector: true
+  - abc_bloc_inspector: true

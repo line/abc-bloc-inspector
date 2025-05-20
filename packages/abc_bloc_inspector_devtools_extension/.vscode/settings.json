@@ -1,0 +1,12 @@
+{
+    "cSpell.words": [
+        "cupertino",
+        "LTWH",
+        "riverpod",
+        "zoomable"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+      },
+}

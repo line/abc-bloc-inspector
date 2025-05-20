@@ -1,0 +1,38 @@
+// cspell: disable
+
+name: flutter_todos
+description: An example todos app that showcases bloc state management patterns.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+
+dependencies:
+  abc_bloc_inspector:
+    path: ../
+  bloc: ^9.0.0
+  equatable: ^2.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.0
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+  local_storage_todos_api:
+    path: packages/local_storage_todos_api
+  todos_api:
+    path: packages/todos_api
+  todos_repository:
+    path: packages/todos_repository
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  flutter_test:
+    sdk: flutter
+  mockingjay: ^0.6.0
+  mocktail: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true

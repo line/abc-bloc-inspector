@@ -1,0 +1,20 @@
+name: abc_bloc_inspector
+description: "The ABC Bloc Inspector is a Flutter package that aids in debugging by providing advanced tools like `AbcBlocInspectorObserver` for tracking state changes in DevTools, and `StateReplayBloc` for directly overwriting state with a `Map`. These features assist in tracking state and mocking state in the DevTools extension, providing a robust environment for testing and debugging."
+version: 1.0.0
+repository: https://github.com/line/abc-bloc-inspector/issues
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  bloc: ^9.0.0
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+

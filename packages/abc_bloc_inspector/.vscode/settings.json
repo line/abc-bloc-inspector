@@ -1,0 +1,13 @@
+{
+    "cSpell.words": [
+        "endtemplate",
+        "mockingjay",
+        "mocktail",
+        "platformhelper",
+        "unawaited"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+      },
+}
