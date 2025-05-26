@@ -36,7 +36,7 @@ void main() {
       test('has correct initial state', () {
         expect(
           buildBloc().state,
-          equals(const EditTodoState()),
+          equals(const EditTodoStateSuccess()),
         );
       });
     });
@@ -47,7 +47,7 @@ void main() {
         build: buildBloc,
         act: (bloc) => bloc.add(const EditTodoTitleChanged('newtitle')),
         expect: () => const [
-          EditTodoState(title: 'newtitle'),
+          EditTodoStateSuccess(title: 'newtitle'),
         ],
       );
     });
@@ -59,7 +59,7 @@ void main() {
         act: (bloc) =>
             bloc.add(const EditTodoDescriptionChanged('newdescription')),
         expect: () => const [
-          EditTodoState(description: 'newdescription'),
+          EditTodoStateSuccess(description: 'newdescription'),
         ],
       );
     });
@@ -72,19 +72,17 @@ void main() {
           when(() => todosRepository.saveTodo(any())).thenAnswer((_) async {});
         },
         build: buildBloc,
-        seed: () => const EditTodoState(
+        seed: () => const EditTodoStateSuccess(
           title: 'title',
           description: 'description',
         ),
         act: (bloc) => bloc.add(const EditTodoSubmitted()),
         expect: () => const [
-          EditTodoState(
-            status: EditTodoStatus.loading,
+          EditTodoStateLoading(
             title: 'title',
             description: 'description',
           ),
-          EditTodoState(
-            status: EditTodoStatus.success,
+          EditTodoStateSubmitted(
             title: 'title',
             description: 'description',
           ),
@@ -113,7 +111,7 @@ void main() {
           when(() => todosRepository.saveTodo(any())).thenAnswer((_) async {});
         },
         build: buildBloc,
-        seed: () => EditTodoState(
+        seed: () => EditTodoStateSuccess(
           initialTodo: Todo(
             id: 'initial-id',
             title: 'initial-title',
@@ -123,21 +121,11 @@ void main() {
         ),
         act: (bloc) => bloc.add(const EditTodoSubmitted()),
         expect: () => [
-          EditTodoState(
-            status: EditTodoStatus.loading,
-            initialTodo: Todo(
-              id: 'initial-id',
-              title: 'initial-title',
-            ),
+          EditTodoStateLoading(
             title: 'title',
             description: 'description',
           ),
-          EditTodoState(
-            status: EditTodoStatus.success,
-            initialTodo: Todo(
-              id: 'initial-id',
-              title: 'initial-title',
-            ),
+          EditTodoStateSubmitted(
             title: 'title',
             description: 'description',
           ),
@@ -167,21 +155,20 @@ void main() {
               .thenThrow(Exception('oops'));
           return buildBloc();
         },
-        seed: () => const EditTodoState(
+        seed: () => const EditTodoStateSuccess(
           title: 'title',
           description: 'description',
         ),
         act: (bloc) => bloc.add(const EditTodoSubmitted()),
         expect: () => const [
-          EditTodoState(
-            status: EditTodoStatus.loading,
+          EditTodoStateLoading(
             title: 'title',
             description: 'description',
           ),
-          EditTodoState(
-            status: EditTodoStatus.failure,
+          EditTodoStateFailure(
             title: 'title',
             description: 'description',
+            errorMessage: 'submit failed: Exception: oops',
           ),
         ],
       );

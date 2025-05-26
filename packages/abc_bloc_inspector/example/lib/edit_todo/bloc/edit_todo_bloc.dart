@@ -1,8 +1,11 @@
 import 'package:abc_bloc_inspector/abc_bloc_inspector.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todos_repository/todos_repository.dart';
 
+part 'edit_todo_bloc.freezed.dart';
+part 'edit_todo_bloc.g.dart';
 part 'edit_todo_event.dart';
 part 'edit_todo_state.dart';
 
@@ -12,7 +15,7 @@ class EditTodoBloc extends StateReplayBloc<EditTodoEvent, EditTodoState> {
     required Todo? initialTodo,
   })  : _todosRepository = todosRepository,
         super(
-          EditTodoState(
+          EditTodoState.success(
             initialTodo: initialTodo,
             title: initialTodo?.title ?? '',
             description: initialTodo?.description ?? '',
@@ -44,7 +47,13 @@ class EditTodoBloc extends StateReplayBloc<EditTodoEvent, EditTodoState> {
     EditTodoSubmitted event,
     Emitter<EditTodoState> emit,
   ) async {
-    emit(state.copyWith(status: EditTodoStatus.loading));
+    emit(
+      EditTodoState.loading(
+        title: state.title,
+        description: state.description,
+      ),
+    );
+
     final todo = (state.initialTodo ?? Todo(title: '')).copyWith(
       title: state.title,
       description: state.description,
@@ -52,10 +61,21 @@ class EditTodoBloc extends StateReplayBloc<EditTodoEvent, EditTodoState> {
 
     try {
       await _todosRepository.saveTodo(todo);
-      emit(state.copyWith(status: EditTodoStatus.success));
+      emit(
+        EditTodoState.submitted(
+          title: todo.title,
+          description: todo.description,
+        ),
+      );
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
-      emit(state.copyWith(status: EditTodoStatus.failure));
+      emit(
+        EditTodoState.failure(
+          title: state.title,
+          description: state.description,
+          errorMessage: 'submit failed: $e',
+        ),
+      );
     }
   }
 }

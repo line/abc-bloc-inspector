@@ -23,10 +23,19 @@ class EditTodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocListener<EditTodoBloc, EditTodoState>(
-        listenWhen: (previous, current) =>
-            previous.status != current.status &&
-            current.status == EditTodoStatus.success,
-        listener: (context, state) => Navigator.of(context).pop(),
+        listenWhen: (previous, current) => previous != current,
+        listener: (context, state) {
+          if (state is EditTodoStateSubmitted) {
+            Navigator.of(context).pop();
+          } else if (state is EditTodoStateFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        },
         child: const EditTodoView(),
       );
 }
@@ -37,16 +46,12 @@ class EditTodoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final status = context.select((EditTodoBloc bloc) => bloc.state.status);
-    final isNewTodo = context.select(
-      (EditTodoBloc bloc) => bloc.state.isNewTodo,
-    );
     final state = context.watch<EditTodoBloc>().state;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isNewTodo
+          state.initialTodo == null
               ? l10n.editTodoAddAppBarTitle
               : l10n.editTodoEditAppBarTitle,
         ),
@@ -56,10 +61,10 @@ class EditTodoView extends StatelessWidget {
         shape: const ContinuousRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32)),
         ),
-        onPressed: status.isLoadingOrSuccess
+        onPressed: state is EditTodoStateLoading
             ? null
             : () => context.read<EditTodoBloc>().add(const EditTodoSubmitted()),
-        child: status.isLoadingOrSuccess
+        child: state is EditTodoStateLoading
             ? const CupertinoActivityIndicator()
             : const Icon(Icons.check_rounded),
       ),
@@ -95,7 +100,7 @@ class _TitleField extends StatelessWidget {
       key: const Key('editTodoView_title_textFormField'),
       initialValue: state.title,
       decoration: InputDecoration(
-        enabled: !state.status.isLoadingOrSuccess,
+        enabled: !(state is EditTodoStateLoading),
         labelText: l10n.editTodoTitleLabel,
         hintText: hintText,
       ),
@@ -125,7 +130,7 @@ class _DescriptionField extends StatelessWidget {
       key: const Key('editTodoView_description_textFormField'),
       initialValue: state.description,
       decoration: InputDecoration(
-        enabled: !state.status.isLoadingOrSuccess,
+        enabled: !(state is EditTodoStateLoading),
         labelText: l10n.editTodoDescriptionLabel,
         hintText: hintText,
       ),

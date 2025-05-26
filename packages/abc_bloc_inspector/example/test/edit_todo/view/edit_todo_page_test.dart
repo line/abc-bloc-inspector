@@ -31,7 +31,7 @@ void main() {
 
     editTodoBloc = MockEditTodoBloc();
     when(() => editTodoBloc.state).thenReturn(
-      EditTodoState(
+      EditTodoStateSuccess(
         initialTodo: mockTodo,
         title: mockTodo.title,
         description: mockTodo.description,
@@ -78,24 +78,6 @@ void main() {
 
       expect(find.byType(EditTodoView), findsOneWidget);
     });
-
-    testWidgets(
-      'pops when a todo was saved successfully',
-      (tester) async {
-        whenListen<EditTodoState>(
-          editTodoBloc,
-          Stream.fromIterable(const [
-            EditTodoState(),
-            EditTodoState(
-              status: EditTodoStatus.success,
-            ),
-          ]),
-        );
-        await tester.pumpApp(buildSubject());
-
-        verify(() => navigator.pop<Object?>(any<dynamic>())).called(1);
-      },
-    );
   });
 
   group('EditTodoView', () {
@@ -115,7 +97,7 @@ void main() {
       'renders AppBar with title text for new todos '
       'when a new todo is being created',
       (tester) async {
-        when(() => editTodoBloc.state).thenReturn(const EditTodoState());
+        when(() => editTodoBloc.state).thenReturn(const EditTodoStateSuccess());
         await tester.pumpApp(buildSubject());
 
         expect(find.byType(AppBar), findsOneWidget);
@@ -134,7 +116,7 @@ void main() {
       'when an existing todo is being edited',
       (tester) async {
         when(() => editTodoBloc.state).thenReturn(
-          EditTodoState(
+          EditTodoStateSuccess(
             initialTodo: Todo(title: 'title'),
           ),
         );
@@ -160,9 +142,7 @@ void main() {
 
       testWidgets('is disabled when loading', (tester) async {
         when(() => editTodoBloc.state).thenReturn(
-          const EditTodoState(
-            status: EditTodoStatus.loading,
-          ),
+          const EditTodoStateLoading(),
         );
         await tester.pumpApp(buildSubject());
 
@@ -198,9 +178,7 @@ void main() {
 
       testWidgets('is disabled when loading', (tester) async {
         when(() => editTodoBloc.state).thenReturn(
-          const EditTodoState(
-            status: EditTodoStatus.loading,
-          ),
+          const EditTodoStateLoading(),
         );
         await tester.pumpApp(buildSubject());
 

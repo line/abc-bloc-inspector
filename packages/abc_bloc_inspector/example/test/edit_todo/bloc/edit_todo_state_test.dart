@@ -13,13 +13,11 @@ void main() {
     );
 
     EditTodoState createSubject({
-      EditTodoStatus status = EditTodoStatus.initial,
       Todo? initialTodo,
       String title = '',
       String description = '',
     }) =>
-        EditTodoState(
-          status: status,
+        EditTodoStateSuccess(
           initialTodo: initialTodo,
           title: title,
           description: description,
@@ -32,28 +30,12 @@ void main() {
       );
     });
 
-    test('props are correct', () {
-      expect(
-        createSubject(
-          status: EditTodoStatus.initial,
-          initialTodo: mockInitialTodo,
-          title: 'title',
-          description: 'description',
-        ).props,
-        equals(<Object?>[
-          EditTodoStatus.initial, // status
-          mockInitialTodo, // initialTodo
-          'title', // title
-          'description', // description
-        ]),
-      );
-    });
-
     test('isNewTodo returns true when a new todo is being created', () {
       expect(
         createSubject(
-          initialTodo: null,
-        ).isNewTodo,
+              initialTodo: null,
+            ).initialTodo ==
+            null,
         isTrue,
       );
     });
@@ -69,10 +51,9 @@ void main() {
       test('retains the old value for every parameter if null is provided', () {
         expect(
           createSubject().copyWith(
-            status: null,
             initialTodo: null,
-            title: null,
-            description: null,
+            title: '',
+            description: '',
           ),
           equals(createSubject()),
         );
@@ -81,14 +62,12 @@ void main() {
       test('replaces every non-null parameter', () {
         expect(
           createSubject().copyWith(
-            status: EditTodoStatus.success,
             initialTodo: mockInitialTodo,
             title: 'title',
             description: 'description',
           ),
           equals(
             createSubject(
-              status: EditTodoStatus.success,
               initialTodo: mockInitialTodo,
               title: 'title',
               description: 'description',
