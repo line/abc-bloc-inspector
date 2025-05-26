@@ -337,11 +337,21 @@ void _drawNodeEdgeObjects(
     );
 
     if (needToDrawBoundary) {
-      final rect = Rect.fromPoints(
-        startOffset - Offset(20, textArea.height + 20),
-        endOffset + Offset(20, 20),
-      );
-      canvas.drawRect(rect, borderPaint);
+      Rect areaRect;
+
+      if (startOffset.dx > endOffset.dx) {
+        areaRect = Rect.fromPoints(
+          endOffset - Offset(20, textArea.height + 20),
+          startOffset + Offset(20, 20),
+        );
+      } else {
+        areaRect = Rect.fromPoints(
+          startOffset - Offset(20, textArea.height + 20),
+          endOffset + Offset(20, 20),
+        );
+      }
+
+      canvas.drawRect(areaRect, borderPaint);
     }
   }
 
