@@ -26,4 +26,7 @@ class CommonConstants {
 
   // Key for import/export data field string
   static const String dataKey = 'data';
+
+  // Key for import logs field string
+  static const String logsKey = 'logs';
 }

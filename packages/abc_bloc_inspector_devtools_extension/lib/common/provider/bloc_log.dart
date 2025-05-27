@@ -80,17 +80,33 @@ class BlocLog extends _$BlocLog {
       print('import file version: $version');
 
       // Update the state with the imported log items
-      state = List<BlocLogItem>.from(
-        importData[CommonConstants.dataKey].map((e) => BlocLogItem.fromJson(e)),
-      );
+      if (importData.containsKey(CommonConstants.logsKey)) {
+        state = List<BlocLogItem>.from(
+          importData[CommonConstants.logsKey].map(
+            (e) {
+              final log = parseBlocLogItem(e);
+              return log;
+            },
+          ),
+        );
+      } else {
+        state = List<BlocLogItem>.from(
+          importData[CommonConstants.dataKey]
+              .map((e) => BlocLogItem.fromJson(e)),
+        );
+      }
+
       // Update the mode and selected tabs with the imported data
       ref.read(modeProvider.notifier).setMode(
-            ModeType.fromString(importData[CommonConstants.modeKey]) ?? ModeType.single,
+            ModeType.fromString(importData[CommonConstants.modeKey]) ??
+                ModeType.single,
           );
       ref.read(selectedTabsProvider.notifier).setTabs(
-            SelectedTabsState.fromJson(
-              importData[CommonConstants.selectedTabsKey],
-            ),
+            importData.containsKey(CommonConstants.selectedTabsKey)
+                ? SelectedTabsState.fromJson(
+                    importData[CommonConstants.selectedTabsKey],
+                  )
+                : SelectedTabsState(),
           );
 
       return true;
