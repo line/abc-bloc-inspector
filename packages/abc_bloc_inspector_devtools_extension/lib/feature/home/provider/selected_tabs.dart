@@ -60,6 +60,9 @@ class SelectedTabs extends _$SelectedTabs {
 
   // Clears all selected tabs.
   void clearSelectedTab() {
-    state = state.copyWith(multi: {});
+    state = state.copyWith(
+      single: {},
+      multi: {},
+    );
   }
 }

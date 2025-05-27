@@ -19,6 +19,7 @@ import 'package:abc_bloc_inspector_devtools_extension/common/widget/popup_dialog
 import 'package:abc_bloc_inspector_devtools_extension/feature/flow_graph/provider/flow_graph_scroll_offset.dart';
 import 'package:abc_bloc_inspector_devtools_extension/feature/home/provider/mode.dart';
 import 'package:abc_bloc_inspector_devtools_extension/feature/home/provider/search.dart';
+import 'package:abc_bloc_inspector_devtools_extension/feature/home/provider/selected_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -74,6 +75,7 @@ class HomeHeader extends ConsumerWidget {
                     ref
                         .read(flowGraphScrollOffsetProvider.notifier)
                         .clearAllOffset();
+                    ref.read(selectedTabsProvider.notifier).clearSelectedTab();
                   },
                 ),
                 const SizedBox(width: 16),
