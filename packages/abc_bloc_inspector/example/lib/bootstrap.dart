@@ -18,7 +18,7 @@ void bootstrap({required TodosApi todosApi}) {
     return true;
   };
 
-  Bloc.observer = const AbcBlocInspectorObserver();
+  Bloc.observer = AbcBlocInspectorObserver();
 
   runApp(App(createTodosRepository: () => TodosRepository(todosApi: todosApi)));
 }

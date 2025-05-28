@@ -13,14 +13,8 @@
 /// under the License.
 library;
 
-class AbcBlocConstants {
-  static const String version = '1.0.0';
-  static const String blocListChanged = 'ext.abcBlocInspector.blocListChanged';
-  static const String blocEvent = 'ext.abcBlocInspector.blocEvent';
-  static const String blocBindingBlocKeys =
-      'AbcBlocBinding.debugInstance.blocs.keys.toList()';
-  static const String blocBindingBlocs = 'AbcBlocBinding.debugInstance.blocs';
-  static const String blocBindingPath =
-      'package:abc_bloc_inspector/src/abc_bloc_binding.dart';
-  static const String stateReplayBlocApplyState = 'applyState';
+// Logger plugin base class for ABC Bloc Inspector
+// ignore: one_member_abstracts
+abstract class AbcBlocLogPluginBase {
+  void log(Map<String, dynamic> log);
 }

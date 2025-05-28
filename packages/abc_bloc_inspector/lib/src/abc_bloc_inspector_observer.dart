@@ -15,13 +15,23 @@ library;
 
 // ignore_for_file: avoid_print, avoid_dynamic_calls, empty_catches, avoid_catches_without_on_clauses
 import 'dart:developer';
-import 'package:abc_bloc_inspector/src/abc_bloc_constants.dart';
+import 'package:abc_bloc_inspector/abc_bloc_inspector.dart';
 import 'package:bloc/bloc.dart';
 
 // Observer class to monitor state changes in Bloc
 class AbcBlocInspectorObserver extends BlocObserver {
-  // Constructor
-  const AbcBlocInspectorObserver();
+  factory AbcBlocInspectorObserver({List? plugins}) {
+    _instance ??= AbcBlocInspectorObserver._internal(plugins);
+    return _instance!;
+  }
+
+  // Factory constructor to return the singleton instance
+  AbcBlocInspectorObserver._internal(this._plugins);
+
+  // Singleton instance
+  static AbcBlocInspectorObserver? _instance;
+
+  final List? _plugins;
 
   // Method to post Bloc events
   void _postBlocEvent(
@@ -29,7 +39,7 @@ class AbcBlocInspectorObserver extends BlocObserver {
     BlocBase<dynamic> bloc, [
     Map<String, dynamic>? additionalData,
   ]) {
-    final eventData = {
+    final logData = {
       'timestamp': DateTime.now().toIso8601String(),
       'type': type,
       'blocName': bloc.runtimeType.toString(),
@@ -38,7 +48,11 @@ class AbcBlocInspectorObserver extends BlocObserver {
 
     try {
       // Post the event
-      postEvent(AbcBlocConstants.blocEvent, eventData);
+      postEvent(AbcBlocConstants.blocEvent, logData);
+
+      for (final plugin in _plugins ?? []) {
+        plugin.log(logData);
+      }
     } catch (e) {
       // Handle errors during event posting
       print('Error posting event: $e');
